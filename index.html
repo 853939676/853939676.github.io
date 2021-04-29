@@ -15,10 +15,10 @@
         var yourVlSpec =
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-  "data": {"url": "https://raw.githubusercontent.com/vega/vega-datasets/master/data/movies.json"},
+  "data": {"url": "https://raw.githubusercontent.com/853939676/IS545/main/clean_crashes.csv"},
   "mark": {"type": "bar"},
   "encoding": {
-    "x": {"field": "Running Time min", "type": "quantitative", "bin": true},
+    "x": {"field": "year", "type": "nominal"},
     "y": {"aggregate": "count", "type": "quantitative"}
   }
 };
