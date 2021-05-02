@@ -116,24 +116,29 @@
                         "aggregate": "max",
                         "scale": { "range": ["#c6dbef", "#1f77b4"] }
                     },
-                "tooltip": [
-                    { "type": "nominal", "field": "year" },
-                    { "type": "quantitative", "field": "injury", "aggregate": "mean" },
-                    { "type": "quantitative", "field": "injury", "aggregate": "max" }
-                ]
-            }
+                    "tooltip": [
+                        { "type": "nominal", "field": "year" },
+                        { "type": "quantitative", "field": "injury", "aggregate": "mean" },
+                        { "type": "quantitative", "field": "injury", "aggregate": "max" }
+                    ]
+                }
             },
-        {
-            "mark": { "type": "bar" },
-            "encoding": {
-                "x": { "field": "year", "type": "ordinal" },
-                "y": { "aggregate": "count", "type": "quantitative" },
-                "color": {
-                    "field": "city",
-                    "type": "nominal"
-                    }
+            {
+                "mark": { "type": "bar" },
+                "encoding": {
+                    "x": { "field": "year", "type": "ordinal" },
+                    "y": { "aggregate": "count", "type": "quantitative" },
+                    "color": {
+                        "field": "city",
+                        "type": "nominal"
+                    },
+                    "tooltip": [
+                        { "type": "nominal", "field": "year" },
+                        { "type": "quantitative", "aggregate": "count" },
+                        { "type": "nominal", "field": "city"}
+                    ]
+                }
             }
-        }
         ]
     };
     var embedded = vegaEmbed('#fact_vis', fact_spec);
