@@ -14,12 +14,15 @@
         lighting, road surface, and traffic control condition of the location where crashes happened, and number of
         injuries/fatalities resulted.
     </p>
-
+    <h2>Data preprocessing</h2>
+    <p> Data preprocessing was done using both Python and OpenRefine to merge multiple datasets and clean low-quality
+        records.</p>
     <h1>Premade Visualizations</h1>
     <p>Map of traffic crashes in Champaign County</p>
     <div id="map_vis"></div>
-    <p>Bar and Dotted Graph</p>
+    <p>Injuries and count of records by year</p>
     <div id="fact_vis"></div>
+    <p>statistics</p>
 
 
 </body>
@@ -94,21 +97,28 @@
         "data": { "url": "https://raw.githubusercontent.com/853939676/IS545/main/final_crashes.csv" },
         hconcat: [
             {
-                "mark": { "type": "bar" },
+                "mark": "circle",
                 "encoding": {
+                    "y": { "field": "injury", "type": "quantitative", "aggregate": "mean" },
                     "x": { "field": "year", "type": "ordinal" },
-                    "y": { "aggregate": "count", "type": "quantitative" },
+                    "size": {
+                        "field": "injury",
+                        "type": "quantitative",
+                        "aggregate": "max"
+                    },
                     "color": {
-                        "field": "city",
-                        "type": "nominal"
+                        "field": "injury",
+                        "type": "quantitative",
+                        "aggregate": "max",
+                        "scale": { "range": ["#c6dbef", "#1f77b4"] }
                     }
                 }
             },
             {
-                "mark": "circle",
+                "mark": { "type": "bar" },
                 "encoding": {
-                    "x": { "field": "year", "type": "nominal" },
-                    "y": { "field": "injury", "type": "quantitative" },
+                    "x": { "field": "year", "type": "ordinal" },
+                    "y": { "aggregate": "count", "type": "quantitative" },
                     "color": {
                         "field": "city",
                         "type": "nominal"
