@@ -22,6 +22,7 @@
     <div id="barVis1"></div>
     <div id="barVis2"></div>
     <p>Dotted Graph</p>
+    <div id="biVis1"></div>
 
 </body>
 <script>
@@ -116,6 +117,19 @@
         }
     };
     var embedded = vegaEmbed('#barVis2', bar2Spec);
+    ;
+
+    var bi1Spec =
+    {
+        "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+        "data": { "url": 'https://raw.githubusercontent.com/853939676/IS545/main/final_crashes.csv' },
+        "mark": "circle",
+        "encoding": {
+            "x": { "field": "year", "type": "quantitative" },
+            "y": { "field": "injury", "type": "quantitative" }
+        }
+    };
+    var embedded = vegaEmbed('#biVis1', bi1Spec);
     ;
 </script>
 
