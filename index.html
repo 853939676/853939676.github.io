@@ -1,78 +1,122 @@
 <html>
-    <head>
-        <title>Hello, this is an example!</title>
-<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
-<script src="https://cdn.jsdelivr.net/npm/vega-lite@4"></script>
-<script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
-    </head>
-    <body>This is my simple, first website.
 
-        <div id="vis"></div>
+<head>
+    <title>Rui Liu IS545 Final Project</title>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+</head>
 
-    </body>
-    <script>
-        var yourVlSpec =
-        {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "width": 400,
-  "height": 500,
-  "layer": [
+<body>
+    <h1>About the dataset</h1>
+    <p>https://data.ccrpc.org/dataset/traffic-crashes
+        traffic crashes in Champaign County from 1999 to 2017. It contains information including weather, street
+        lighting, road surface, and traffic control condition of the location where crashes happened, and number of
+        injuries/fatalities resulted.
+    </p>
+
+    <h1>Premade Visualizations</h1>
+    <p>Map of traffic crashes in Champaign County</p>
+    <div id="vis"></div>
+    <p>Bar Graph</p>
+    <div id="barVis1"></div>
+    <div id="barVis2"></div>
+    <p>Dotted Graph</p>
+
+</body>
+<script>
+    var yourVlSpec =
     {
-      "data": {
-        "url": "https://raw.githubusercontent.com/kthotav/TopoJSON-Maps/master/usa/usa-states/illinois/illinois-counties.json",
-        "format": {
-          "type": "topojson",
-          "feature": "illinois-counties"
-        }
-      },
-       "transform": [
-      {
-        "filter": {
-          "field": "properties.NAME",
-          "equal": "Champaign"
-        }
-      }
-    ],
-      "projection": {
-        "type": "mercator"
-      },
-      "mark": {
-        "type": "geoshape",
-        "fill": "#e9ebf0",
-        "stroke": "white"
-      }
-    },
+        "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+        "width": 400,
+        "height": 500,
+        "layer": [
+            {
+                "data": {
+                    "url": "https://raw.githubusercontent.com/kthotav/TopoJSON-Maps/master/usa/usa-states/illinois/illinois-counties.json",
+                    "format": {
+                        "type": "topojson",
+                        "feature": "illinois-counties"
+                    }
+                },
+                "transform": [
+                    {
+                        "filter": {
+                            "field": "properties.NAME",
+                            "equal": "Champaign"
+                        }
+                    }
+                ],
+                "projection": {
+                    "type": "mercator"
+                },
+                "mark": {
+                    "type": "geoshape",
+                    "fill": "#e9ebf0",
+                    "stroke": "white"
+                }
+            },
+            {
+                "data": {
+                    "url": "https://raw.githubusercontent.com/853939676/IS545/main/final_crashes.csv"
+                },
+                "projection": {
+                    "type": "albersUsa"
+                },
+                "mark": "circle",
+                "encoding": {
+                    "longitude": {
+                        "field": "x",
+                        "type": "quantitative"
+                    },
+                    "latitude": {
+                        "field": "y",
+                        "type": "quantitative"
+                    },
+                    "size": { "value": 10 },
+                    "color": { "value": "steelblue" },
+                    "tooltip": [
+                        { "field": "year", "type": "quantitative" },
+                        { "field": "city", "type": "ordinal" },
+                        { "field": "collision_type", "type": "ordinal" },
+                        { "field": "fatality", "type": "quantitative" },
+                        { "field": "injury", "type": "quantitative" }
+
+                    ]
+                }
+            }
+        ]
+    };
+    var embedded = vegaEmbed('#vis', yourVlSpec);
+
+    var bar1Spec =
     {
-      "data": {
-        "url": "https://raw.githubusercontent.com/853939676/IS545/main/xy_crashes.csv"
-      },
-      "projection": {
-        "type": "albersUsa"
-      },
-      "mark": "circle",
-      "encoding": {
-        "longitude": {
-          "field": "x",
-          "type": "quantitative"
-        },
-        "latitude": {
-          "field": "y",
-          "type": "quantitative"
-        },
-        "size": {"value": 10},
-        "color": {"value": "steelblue"},
-        "tooltip": [
-          {"field": "year", "type":"quantitative"},
-          {"field": "city", "type":"ordinal"},
-          {"field": "collision_type", "type":"ordinal"},
-          {"field": "fatality", "type":"quantitative"},
-          {"field": "injury", "type":"quantitative"}
-          
-          ]
-      }
-    }
-  ]
-};
-var embedded = vegaEmbed('#vis', yourVlSpec);
-    </script>
+        "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+        "data": { "url": "https://raw.githubusercontent.com/853939676/IS545/main/final_crashes.csv" },
+        "mark": { "type": "bar" },
+        "encoding": {
+            "x": { "field": "year", "type": "ordinal" },
+            "y": { "aggregate": "count", "type": "quantitative" },
+            "color": {
+                "field": "city",
+                "type": "nominal"
+            }
+        }
+    };
+    var embedded = vegaEmbed('#barVis1', bar1Spec);
+    ;
+    var bar2Spec =
+    {
+        "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+        "data": { "url": 'https://raw.githubusercontent.com/853939676/IS545/main/final_crashes.csv' },
+        "mark": { "type": "bar" },
+        "encoding": {
+            "x": { "field": "collision_type", "type": "ordinal" },
+            "y": { "aggregate": "count", "type": "quantitative" }
+        }
+    };
+    var embedded = vegaEmbed('#barVis2', bar2Spec);
+    ;
+</script>
+
 </html>
