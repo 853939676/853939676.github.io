@@ -17,16 +17,14 @@
 
     <h1>Premade Visualizations</h1>
     <p>Map of traffic crashes in Champaign County</p>
-    <div id="vis"></div>
-    <p>Bar Graph</p>
-    <div id="barVis1"></div>
-    <div id="barVis2"></div>
-    <p>Dotted Graph</p>
-    <div id="biVis1"></div>
+    <div id="map_vis"></div>
+    <p>Bar and Dotted Graph</p>
+    <div id="fact_vis"></div>
+
 
 </body>
 <script>
-    var yourVlSpec =
+    var map_vis_spec =
     {
         "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
         "width": 400,
@@ -88,49 +86,36 @@
             }
         ]
     };
-    var embedded = vegaEmbed('#vis', yourVlSpec);
+    var embedded = vegaEmbed('#map_vis', map_vis_spec);
 
-    var bar1Spec =
+    var fact_spec =
     {
         "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
         "data": { "url": "https://raw.githubusercontent.com/853939676/IS545/main/final_crashes.csv" },
-        "mark": { "type": "bar" },
-        "encoding": {
-            "x": { "field": "year", "type": "ordinal" },
-            "y": { "aggregate": "count", "type": "quantitative" },
-            "color": {
-                "field": "city",
-                "type": "nominal"
+        hconcat:[
+            {
+            "mark": { "type": "bar" },
+            "encoding": {
+                "x": { "field": "year", "type": "ordinal" },
+                "y": { "aggregate": "count", "type": "quantitative" },
+                "color": {
+                    "field": "city",
+                    "type": "nominal"
+                }
             }
-        }
-    };
-    var embedded = vegaEmbed('#barVis1', bar1Spec);
-    ;
-    var bar2Spec =
-    {
-        "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-        "data": { "url": 'https://raw.githubusercontent.com/853939676/IS545/main/final_crashes.csv' },
-        "mark": { "type": "bar" },
+        },
+        {
+            "mark": "circle",
         "encoding": {
-            "x": { "field": "collision_type", "type": "ordinal" },
-            "y": { "aggregate": "count", "type": "quantitative" }
+            "x": { "field": "year", "type": "nominal" },
+            "y": { "field": "injury", "type": "quatitative" }
         }
+        }
+    ]
     };
-    var embedded = vegaEmbed('#barVis2', bar2Spec);
+    var embedded = vegaEmbed('#fact_vis', fact_spec);
     ;
 
-    var bi1Spec =
-    {
-        "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-        "data": { "url": 'https://raw.githubusercontent.com/853939676/IS545/main/final_crashes.csv' },
-        "mark": "circle",
-        "encoding": {
-            "x": { "field": "year", "type": "quantitative" },
-            "y": { "field": "injury", "type": "quantitative" }
-        }
-    };
-    var embedded = vegaEmbed('#biVis1', bi1Spec);
-    ;
 </script>
 
 </html>
