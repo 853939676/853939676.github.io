@@ -101,6 +101,22 @@
         "data": { "url": "https://raw.githubusercontent.com/853939676/IS545/main/final_crashes.csv" },
         "vconcat": [
             {
+                "mark": { "type": "bar" },
+                "encoding": {
+                    "x": { "field": "year", "type": "ordinal" },
+                    "y": { "aggregate": "count", "type": "quantitative" },
+                    "color": {
+                        "field": "city",
+                        "type": "nominal"
+                    },
+                    "tooltip": [
+                        { "type": "nominal", "field": "year" },
+                        { "type": "quantitative", "aggregate": "count" },
+                        { "type": "nominal", "field": "city" }
+                    ]
+                }
+            },
+            {
                 "mark": "circle",
                 "encoding": {
                     "y": { "field": "injury", "type": "quantitative", "aggregate": "mean" },
@@ -124,26 +140,33 @@
                 }
             },
             {
-                "mark": { "type": "bar" },
+                "mark": "circle",
                 "encoding": {
+                    "y": { "field": "fatality", "type": "quantitative", "aggregate": "mean" },
                     "x": { "field": "year", "type": "ordinal" },
-                    "y": { "aggregate": "count", "type": "quantitative" },
+                    "size": {
+                        "field": "fatality",
+                        "type": "quantitative",
+                        "aggregate": "max"
+                    },
                     "color": {
-                        "field": "city",
-                        "type": "nominal"
+                        "field": "fatality",
+                        "type": "quantitative",
+                        "aggregate": "max",
+                        "scale": { "range": ["#c6dbef", "#1f77b4"] }
                     },
                     "tooltip": [
                         { "type": "nominal", "field": "year" },
-                        { "type": "quantitative", "aggregate": "count" },
-                        { "type": "nominal", "field": "city"}
+                        { "type": "quantitative", "field": "fatality", "aggregate": "mean" },
+                        { "type": "quantitative", "field": "fatality", "aggregate": "max" }
                     ]
                 }
             }
+
         ]
     };
     var embedded = vegaEmbed('#fact_vis', fact_spec);
     ;
-
 
 </script>
 
