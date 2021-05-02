@@ -92,26 +92,26 @@
     {
         "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
         "data": { "url": "https://raw.githubusercontent.com/853939676/IS545/main/final_crashes.csv" },
-        hconcat:[
+        hconcat: [
             {
-            "mark": { "type": "bar" },
-            "encoding": {
-                "x": { "field": "year", "type": "ordinal" },
-                "y": { "aggregate": "count", "type": "quantitative" },
-                "color": {
-                    "field": "city",
-                    "type": "nominal"
+                "mark": { "type": "bar" },
+                "encoding": {
+                    "x": { "field": "year", "type": "ordinal" },
+                    "y": { "aggregate": "count", "type": "quantitative" },
+                    "color": {
+                        "field": "city",
+                        "type": "nominal"
+                    }
+                }
+            },
+            {
+                "mark": "circle",
+                "encoding": {
+                    "x": { "field": "year", "type": "nominal" },
+                    "y": { "field": "injury", "type": "quantitative" }
                 }
             }
-        },
-        {
-            "mark": "circle",
-        "encoding": {
-            "x": { "field": "year", "type": "nominal" },
-            "y": { "field": "injury", "type": "quatitative" }
-        }
-        }
-    ]
+        ]
     };
     var embedded = vegaEmbed('#fact_vis', fact_spec);
     ;
