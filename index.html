@@ -13,19 +13,67 @@
     </body>
     <script>
         var yourVlSpec =
-{
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-  "data": {"url": "https://raw.githubusercontent.com/853939676/IS545/main/clean_crashes.csv"},
-  "mark": {"type": "bar"},
-  "encoding": {
-    "x": {"field": "year", "type": "nominal"},
-    "y": {"aggregate": "count", "type": "quantitative"}
-  }
+        {
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 400,
+  "height": 500,
+  "layer": [
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/kthotav/TopoJSON-Maps/master/usa/usa-states/illinois/illinois-counties.json",
+        "format": {
+          "type": "topojson",
+          "feature": "illinois-counties"
+        }
+      },
+       "transform": [
+      {
+        "filter": {
+          "field": "properties.NAME",
+          "equal": "Champaign"
+        }
+      }
+    ],
+      "projection": {
+        "type": "mercator"
+      },
+      "mark": {
+        "type": "geoshape",
+        "fill": "#e9ebf0",
+        "stroke": "white"
+      }
+    },
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/853939676/IS545/main/xy_crashes.csv"
+      },
+      "projection": {
+        "type": "albersUsa"
+      },
+      "mark": "circle",
+      "encoding": {
+        "longitude": {
+          "field": "x",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "y",
+          "type": "quantitative"
+        },
+        "size": {"value": 10},
+        "color": {"value": "steelblue"},
+        "tooltip": [
+          {"field": "year", "type":"quantitative"},
+          {"field": "city", "type":"ordinal"},
+          {"field": "collision_type", "type":"ordinal"},
+          {"field": "fatality", "type":"quantitative"},
+          {"field": "injury", "type":"quantitative"}
+          
+          ]
+      }
+    }
+  ]
 };
-document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("addvis").addEventListener("click", (event) => {
-        var embedded = vegaEmbed('#vis', yourVlSpec);
-    });
-});
+var embedded = vegaEmbed('#vis', yourVlSpec);
     </script>
 </html>
