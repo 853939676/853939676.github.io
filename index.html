@@ -22,7 +22,7 @@
     <div id="map_vis"></div>
     <p>Injuries and count of records by year</p>
     <div id="fact_vis"></div>
-    <p>statistics</p>
+    <p>Statistics</p>
 
 
 </body>
@@ -95,7 +95,7 @@
     {
         "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
         "data": { "url": "https://raw.githubusercontent.com/853939676/IS545/main/final_crashes.csv" },
-        hconcat: [
+        "vconcat": [
             {
                 "mark": "circle",
                 "encoding": {
