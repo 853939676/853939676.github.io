@@ -1,0 +1,245 @@
+<html>
+
+<head>
+    <title>Premade</title>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+</head>
+
+<body>
+    <h1>Premade Visualizations</h1>
+    <p>Map of traffic crashes in Champaign County</p>
+    <div id="map_vis"></div>
+    <p>Count of records, mean of injuries and fatalities by year</p>
+    <div id="fact_vis"></div>
+
+
+</body>
+<script>
+    var map_vis_spec =
+    {
+        "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+        "width": 400,
+        "height": 500,
+        "layer": [
+            {
+                "data": {
+                    "url": "https://raw.githubusercontent.com/kthotav/TopoJSON-Maps/master/usa/usa-states/illinois/illinois-counties.json",
+                    "format": {
+                        "type": "topojson",
+                        "feature": "illinois-counties"
+                    }
+                },
+                "transform": [
+                    {
+                        "filter": {
+                            "field": "properties.NAME",
+                            "equal": "Champaign"
+                        }
+                    }
+                ],
+                "projection": {
+                    "type": "mercator"
+                },
+                "mark": {
+                    "type": "geoshape",
+                    "fill": "#e9ebf0",
+                    "stroke": "white"
+                }
+            },
+            {
+                "data": {
+                    "url": "https://raw.githubusercontent.com/853939676/IS545/main/final_crashes.csv"
+                },
+                "projection": {
+                    "type": "albersUsa"
+                },
+                "mark": "circle",
+                "encoding": {
+                    "longitude": {
+                        "field": "x",
+                        "type": "quantitative"
+                    },
+                    "latitude": {
+                        "field": "y",
+                        "type": "quantitative"
+                    },
+                    "size": { "value": 10 },
+                    "color": { "value": "steelblue" },
+                    "tooltip": [
+                        { "field": "year", "type": "quantitative" },
+                        { "field": "city", "type": "nominal" },
+                        { "field": "crash_severity", "type": "nominal" },
+                        { "field": "collision_type", "type": "nominal" },
+                        { "field": "fatality", "type": "quantitative" },
+                        { "field": "injury", "type": "quantitative" },
+                        { "field": "weather", "type": "nominal" },
+                        { "field": "light", "type": "nominal" },
+                        { "field": "road_surface", "type": "nominal" },
+                        { "field": "traffic_control", "type": "nominal" }
+                    ]
+                }
+            }
+        ]
+    };
+    var embedded = vegaEmbed('#map_vis', map_vis_spec);
+
+    var fact_spec =
+    {
+        "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+        "data": { "url": "https://raw.githubusercontent.com/853939676/IS545/main/final_crashes.csv" },
+        "vconcat": [
+            {
+                "mark": { "type": "bar" },
+                "encoding": {
+                    "x": { "field": "year", "type": "ordinal" },
+                    "y": { "aggregate": "count", "type": "quantitative" },
+                    "color": {
+                        "field": "city",
+                        "type": "nominal"
+                    },
+                    "tooltip": [
+                        { "type": "nominal", "field": "year" },
+                        { "type": "quantitative", "aggregate": "count" },
+                        { "type": "nominal", "field": "city" }
+                    ]
+                }
+            },
+            {
+                "mark": "circle",
+                "encoding": {
+                    "y": { "field": "injury", "type": "quantitative", "aggregate": "mean" },
+                    "x": { "field": "year", "type": "ordinal" },
+                    "size": {
+                        "field": "injury",
+                        "type": "quantitative",
+                        "aggregate": "max"
+                    },
+                    "color": {
+                        "field": "injury",
+                        "type": "quantitative",
+                        "aggregate": "max",
+                        "scale": { "range": ["#c6dbef", "#1f77b4"] }
+                    },
+                    "tooltip": [
+                        { "type": "nominal", "field": "year" },
+                        { "type": "quantitative", "field": "injury", "aggregate": "mean" },
+                        { "type": "quantitative", "field": "injury", "aggregate": "max" }
+                    ]
+                }
+            },
+            {
+                "mark": "circle",
+                "encoding": {
+                    "y": { "field": "fatality", "type": "quantitative", "aggregate": "mean" },
+                    "x": { "field": "year", "type": "ordinal" },
+                    "size": {
+                        "field": "fatality",
+                        "type": "quantitative",
+                        "aggregate": "max"
+                    },
+                    "color": {
+                        "field": "fatality",
+                        "type": "quantitative",
+                        "aggregate": "max",
+                        "scale": { "range": ["#c6dbef", "#1f77b4"] }
+                    },
+                    "tooltip": [
+                        { "type": "nominal", "field": "year" },
+                        { "type": "quantitative", "field": "fatality", "aggregate": "mean" },
+                        { "type": "quantitative", "field": "fatality", "aggregate": "max" }
+                    ]
+                }
+            }
+
+        ]
+    };
+    var embedded = vegaEmbed('#fact_vis', fact_spec);
+    ;
+
+    var map_inter_spec =
+    {
+        "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+        "width": 400,
+        "height": 500,
+        "data": {
+            "url": "https://raw.githubusercontent.com/853939676/IS545/main/final_crashes.csv"
+        },
+        "projection": {
+            "type": "albersUsa"
+        },
+        "mark": "circle",
+        "encoding": {
+            "longitude": {
+                "field": "x",
+                "type": "quantitative"
+            },
+            "latitude": {
+                "field": "y",
+                "type": "quantitative"
+            },
+            "size": { "value": 10 },
+            "color": { "value": "steelblue" },
+            "tooltip": [
+                { "field": "year", "type": "quantitative" },
+                { "field": "city", "type": "nominal" },
+                { "field": "crash_severity", "type": "nominal" },
+                { "field": "collision_type", "type": "nominal" },
+                { "field": "fatality", "type": "quantitative" },
+                { "field": "injury", "type": "quantitative" },
+                { "field": "weather", "type": "nominal" },
+                { "field": "light", "type": "nominal" },
+                { "field": "road_surface", "type": "nominal" },
+                { "field": "traffic_control", "type": "nominal" }
+            ]
+        }
+    }
+        ;
+    var embedded = vegaEmbed('#map_inter_vis', map_inter_spec);
+
+    var map_color_spec =
+    {
+        "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+        "width": 400,
+        "height": 500,
+        "data": {
+            "url": "https://raw.githubusercontent.com/853939676/IS545/main/final_crashes.csv"
+        },
+        "projection": {
+            "type": "albersUsa"
+        },
+        "mark": "circle",
+        "encoding": {
+            "longitude": {
+                "field": "x",
+                "type": "quantitative"
+            },
+            "latitude": {
+                "field": "y",
+                "type": "quantitative"
+            },
+            "size": { "value": 10 },
+            "color": { "field": "color",
+                        "type": "nominal" },
+            "tooltip": [
+                { "field": "year", "type": "quantitative" },
+                { "field": "city", "type": "nominal" },
+                { "field": "crash_severity", "type": "nominal" },
+                { "field": "collision_type", "type": "nominal" },
+                { "field": "fatality", "type": "quantitative" },
+                { "field": "injury", "type": "quantitative" },
+                { "field": "weather", "type": "nominal" },
+                { "field": "light", "type": "nominal" },
+                { "field": "road_surface", "type": "nominal" },
+                { "field": "traffic_control", "type": "nominal" }
+            ]
+        }
+
+
+    };
+    var embedded = vegaEmbed('#map_col', map_color_spec);
+
+</script>
+
+</html>
