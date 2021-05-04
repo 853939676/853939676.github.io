@@ -25,27 +25,36 @@
         "layer": [
             {
                 "data": {
-                    "url": "https://raw.githubusercontent.com/kthotav/TopoJSON-Maps/master/usa/usa-states/illinois/illinois-counties.json",
+                    "url": "https://gist.githubusercontent.com/jefffriesen/6892860/raw/e1f82336dde8de0539a7bac7b8bc60a23d0ad788/zips_us_topo.json",
                     "format": {
                         "type": "topojson",
-                        "feature": "illinois-counties"
+                        "feature": "zip_codes_for_the_usa"
                     }
                 },
                 "transform": [
                     {
                         "filter": {
-                            "field": "properties.NAME",
-                            "equal": "Champaign"
+                            "field": "properties.zip",
+                            "oneOf": ["60598", "60949", "60957", "61801", "61802", "61803", "61810", "61815", "61816", "61820", "61821", "61822",
+                                "61824", "61825", "61826", "61840", "61843", "61845", "61847", "61849", "61851", "61852", "61853", "61859", "61862",
+                                "61863", "61864", "61866", "61871", "61872", "61873", "61874", "61875", "61877", "61878", "61880", "61884", "61956"]
                         }
                     }
                 ],
                 "projection": {
-                    "type": "mercator"
+                    "type": "albersUsa"
                 },
                 "mark": {
                     "type": "geoshape",
                     "fill": "#e9ebf0",
                     "stroke": "white"
+                },
+                "encoding": {
+                    tooltip: [
+                        { field: "properties.name", title: "City" },
+                        { field: "properties.zip", title: "Zip" }
+                    ]
+
                 }
             },
             {
@@ -220,8 +229,10 @@
                 "type": "quantitative"
             },
             "size": { "value": 10 },
-            "color": { "field": "color",
-                        "type": "nominal" },
+            "color": {
+                "field": "color",
+                "type": "nominal"
+            },
             "tooltip": [
                 { "field": "year", "type": "quantitative" },
                 { "field": "city", "type": "nominal" },
