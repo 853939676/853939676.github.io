@@ -1,96 +1,157 @@
 <html>
 
 <head>
-    <title>Premade</title>
+    <title>Premade visualizations</title>
     <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-lite@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
 </head>
 
 <body>
-    <h1>Premade Visualizations</h1>
-    <p>Map of traffic crashes in Champaign County</p>
-    <div id="map_vis"></div>
-    <p>Count of records, mean of injuries and fatalities by year</p>
-    <div id="fact_vis"></div>
+    <h2>Map of traffic crashes in Champaign County</h2>
+    <p>
+        The map shows all traffic crashes in Champaign county from 1999 to 2017. By placing your mouse over
+        a point, detailed information of the crash will be displayed. For crash records with "unincorporated"
+        cities, please refer to the tooltip of shaded background for location information.
+        <br>
+        From the map we can see that the density of crashes is significantly higher in downtown Champaign-Urbana
+        area and along major highways. And the bar graph on the right displays top 10 cities of crashes.
+    </p>
+    <div id="map_vis" style="height: 600px;"></div>
+    <h2>Mean of injuries and fatalities, count of records by year</h2>
+    <p>
+        First two graphs shows the mean and max of injuries and fatalities by year. The position of circles represents 
+        the mean value for each year. The size and color of circles represent the max number for each year. 
+        To be more specific, the greater the number is, the darker and larger the circle will be. 
+        <br>
+        An interesting finding is that although count of records increased a lot from 1999, mean of injury remains relatively
+        stable. Moreover, there is a decreasing trend in mean of fatality. A possible explaination to the sudden increase of
+        records in 2005 is that the Champaign county might started using digital techniques, so more crashes were recorded 
+        starting 2005. 
+    </p>
+    <div id="fact_vis" style="width: 800px;"></div>
 
 
 </body>
 <script>
     var map_vis_spec =
     {
-        "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-        "width": 400,
-        "height": 500,
-        "layer": [
+        "hconcat": [
             {
-                "data": {
-                    "url": "https://gist.githubusercontent.com/jefffriesen/6892860/raw/e1f82336dde8de0539a7bac7b8bc60a23d0ad788/zips_us_topo.json",
-                    "format": {
-                        "type": "topojson",
-                        "feature": "zip_codes_for_the_usa"
-                    }
-                },
-                "transform": [
+                "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+                "width": 400,
+                "height": 500,
+                "layer": [
                     {
-                        "filter": {
-                            "field": "properties.zip",
-                            "oneOf": ["60598", "60949", "60957", "61801", "61802", "61803", "61810", "61815", "61816", "61820", "61821", "61822",
-                                "61824", "61825", "61826", "61840", "61843", "61845", "61847", "61849", "61851", "61852", "61853", "61859", "61862",
-                                "61863", "61864", "61866", "61871", "61872", "61873", "61874", "61875", "61877", "61878", "61880", "61884", "61956"]
+                        "data": {
+                            "url": "https://gist.githubusercontent.com/jefffriesen/6892860/raw/e1f82336dde8de0539a7bac7b8bc60a23d0ad788/zips_us_topo.json",
+                            "format": {
+                                "type": "topojson",
+                                "feature": "zip_codes_for_the_usa"
+                            }
+                        },
+                        "transform": [
+                            {
+                                "filter": {
+                                    "field": "properties.zip",
+                                    "oneOf": ["60598", "60949", "60957", "61801", "61802", "61803", "61810", "61815", "61816", "61820", "61821", "61822",
+                                        "61824", "61825", "61826", "61840", "61843", "61845", "61847", "61849", "61851", "61852", "61853", "61859", "61862",
+                                        "61863", "61864", "61866", "61871", "61872", "61873", "61874", "61875", "61877", "61878", "61880", "61884", "61956"]
+                                }
+                            }
+                        ],
+                        "projection": {
+                            "type": "albersUsa"
+                        },
+                        "mark": {
+                            "type": "geoshape",
+                            "fill": "#e9ebf0",
+                            "stroke": "white"
+                        },
+                        "encoding": {
+                            tooltip: [
+                                { field: "properties.name", title: "City" },
+                                { field: "properties.zip", title: "Zip" }
+                            ]
+
+                        }
+                    },
+                    {
+                        "data": {
+                            "url": "https://raw.githubusercontent.com/853939676/IS545/main/final_crashes.csv"
+                        },
+                        "projection": {
+                            "type": "albersUsa"
+                        },
+                        "mark": "circle",
+                        "encoding": {
+                            "longitude": {
+                                "field": "x",
+                                "type": "quantitative"
+                            },
+                            "latitude": {
+                                "field": "y",
+                                "type": "quantitative"
+                            },
+                            "size": { "value": 10 },
+                            "color": { "value": "steelblue" },
+                            "tooltip": [
+                                { "field": "year", "type": "quantitative" },
+                                { "field": "city", "type": "nominal" },
+                                { "field": "crash_severity", "type": "nominal" },
+                                { "field": "collision_type", "type": "nominal" },
+                                { "field": "fatality", "type": "quantitative" },
+                                { "field": "injury", "type": "quantitative" },
+                                { "field": "weather", "type": "nominal" },
+                                { "field": "light", "type": "nominal" },
+                                { "field": "road_surface", "type": "nominal" },
+                                { "field": "traffic_control", "type": "nominal" }
+                            ]
                         }
                     }
-                ],
-                "projection": {
-                    "type": "albersUsa"
-                },
-                "mark": {
-                    "type": "geoshape",
-                    "fill": "#e9ebf0",
-                    "stroke": "white"
-                },
-                "encoding": {
-                    tooltip: [
-                        { field: "properties.name", title: "City" },
-                        { field: "properties.zip", title: "Zip" }
-                    ]
-
-                }
+                ]
             },
             {
-                "data": {
-                    "url": "https://raw.githubusercontent.com/853939676/IS545/main/final_crashes.csv"
-                },
-                "projection": {
-                    "type": "albersUsa"
-                },
-                "mark": "circle",
+                "title":"Top 10 cities of crash records",
+                "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+                "data": { "url": "https://raw.githubusercontent.com/853939676/IS545/main/final_crashes.csv" },
+                "transform": [
+                    {
+                        "aggregate": [{ "op": "count", "as": "crash_city" }],
+                        "groupby": ["city"]
+                    },
+                    {
+                        "window": [{ "op": "row_number", "as": "rank" }],
+                        "sort": [{ "field": "crash_city", "order": "descending" }]
+                    },
+                    {
+                        "calculate": "datum.rank < 10 ? datum.city : 'All Others'", "as": "Cities"
+                    }
+                ],
                 "encoding": {
-                    "longitude": {
-                        "field": "x",
-                        "type": "quantitative"
+                    "x": { "aggregate": "sum", "field": "crash_city", "type": "quantitative", "title":"Count of crashes"},
+                    "y": {
+                        "field": "Cities", "type": "ordinal", "title":"Cities",
+                        "sort": { "aggregate": "sum", "field": "crash_city", "type": "quantitative", "order": "descending" }
+                    }
+                },
+                "layer": [{
+                    "mark": "bar"
+                }, {
+                    "mark": {
+                        "type": "text",
+                        "align": "left",
+                        "baseline": "middle",
+                        "dx": 3
                     },
-                    "latitude": {
-                        "field": "y",
-                        "type": "quantitative"
-                    },
-                    "size": { "value": 10 },
-                    "color": { "value": "steelblue" },
-                    "tooltip": [
-                        { "field": "year", "type": "quantitative" },
-                        { "field": "city", "type": "nominal" },
-                        { "field": "crash_severity", "type": "nominal" },
-                        { "field": "collision_type", "type": "nominal" },
-                        { "field": "fatality", "type": "quantitative" },
-                        { "field": "injury", "type": "quantitative" },
-                        { "field": "weather", "type": "nominal" },
-                        { "field": "light", "type": "nominal" },
-                        { "field": "road_surface", "type": "nominal" },
-                        { "field": "traffic_control", "type": "nominal" }
-                    ]
-                }
+                    "encoding": {
+                        "text": { "aggregate": "sum", "field": "crash_city", "type": "quantitative" }
+                    }
+                }]
+                
             }
         ]
+
     };
     var embedded = vegaEmbed('#map_vis', map_vis_spec);
 
@@ -100,67 +161,88 @@
         "data": { "url": "https://raw.githubusercontent.com/853939676/IS545/main/final_crashes.csv" },
         "vconcat": [
             {
-                "mark": { "type": "bar" },
-                "encoding": {
-                    "x": { "field": "year", "type": "ordinal" },
-                    "y": { "aggregate": "count", "type": "quantitative" },
-                    "color": {
-                        "field": "city",
-                        "type": "nominal"
+                "hconcat": [
+                    {
+                        "mark": "circle",
+                        "encoding": {
+                            "y": { "field": "injury", "type": "quantitative", "aggregate": "mean" },
+                            "x": { "field": "year", "type": "ordinal" },
+                            "size": {
+                                "field": "injury",
+                                "type": "quantitative",
+                                "aggregate": "max"
+                            },
+                            "color": {
+                                "field": "injury",
+                                "type": "quantitative",
+                                "aggregate": "max",
+                                "scale": { "range": ["#c6dbef", "#1f77b4"] }
+                            },
+                            "tooltip": [
+                                { "type": "nominal", "field": "year" },
+                                { "type": "quantitative", "field": "injury", "aggregate": "mean" },
+                                { "type": "quantitative", "field": "injury", "aggregate": "max" }
+                            ]
+                        }
                     },
-                    "tooltip": [
-                        { "type": "nominal", "field": "year" },
-                        { "type": "quantitative", "aggregate": "count" },
-                        { "type": "nominal", "field": "city" }
-                    ]
-                }
+                    {
+                        "mark": "circle",
+                        "encoding": {
+                            "y": { "field": "fatality", "type": "quantitative", "aggregate": "mean" },
+                            "x": { "field": "year", "type": "ordinal" },
+                            "size": {
+                                "field": "fatality",
+                                "type": "quantitative",
+                                "aggregate": "max"
+                            },
+                            "color": {
+                                "field": "fatality",
+                                "type": "quantitative",
+                                "aggregate": "max",
+                                "scale": { "range": ["#c6dbef", "#1f77b4"] }
+                            },
+                            "tooltip": [
+                                { "type": "nominal", "field": "year" },
+                                { "type": "quantitative", "field": "fatality", "aggregate": "mean" },
+                                { "type": "quantitative", "field": "fatality", "aggregate": "max" }
+                            ]
+                        }
+                    }
+                ]
             },
             {
-                "mark": "circle",
-                "encoding": {
-                    "y": { "field": "injury", "type": "quantitative", "aggregate": "mean" },
-                    "x": { "field": "year", "type": "ordinal" },
-                    "size": {
-                        "field": "injury",
-                        "type": "quantitative",
-                        "aggregate": "max"
+                "layer": [{
+                    "mark": "bar",
+                    "encoding": {
+                        "x": { "field": "year", "type": "ordinal" },
+                        "y": { "aggregate": "count", "type": "quantitative" },
+                        "color": {
+                            "field": "city",
+                            "type": "nominal"
+                        },
+                        "tooltip": [
+                            { "type": "nominal", "field": "year" },
+                            { "type": "quantitative", "aggregate": "count" },
+                            { "type": "nominal", "field": "city" }
+                        ]
+                    }
+                },
+                {
+                    "mark": {
+                        "type": "text",
+                        "align": "center",
+                        "baseline": "bottom",
+                        "dy": -3
                     },
-                    "color": {
-                        "field": "injury",
-                        "type": "quantitative",
-                        "aggregate": "max",
-                        "scale": { "range": ["#c6dbef", "#1f77b4"] }
-                    },
-                    "tooltip": [
-                        { "type": "nominal", "field": "year" },
-                        { "type": "quantitative", "field": "injury", "aggregate": "mean" },
-                        { "type": "quantitative", "field": "injury", "aggregate": "max" }
-                    ]
+                    "encoding": {
+                        "x": { "field": "year", "type": "ordinal" },
+                        "y": { "aggregate": "count", "type": "quantitative" },
+                        "text": { "type": "quantitative", "aggregate": "count" },
+                        "color": { "value": "#4d77bf" }
+                    }
                 }
+                ]
             },
-            {
-                "mark": "circle",
-                "encoding": {
-                    "y": { "field": "fatality", "type": "quantitative", "aggregate": "mean" },
-                    "x": { "field": "year", "type": "ordinal" },
-                    "size": {
-                        "field": "fatality",
-                        "type": "quantitative",
-                        "aggregate": "max"
-                    },
-                    "color": {
-                        "field": "fatality",
-                        "type": "quantitative",
-                        "aggregate": "max",
-                        "scale": { "range": ["#c6dbef", "#1f77b4"] }
-                    },
-                    "tooltip": [
-                        { "type": "nominal", "field": "year" },
-                        { "type": "quantitative", "field": "fatality", "aggregate": "mean" },
-                        { "type": "quantitative", "field": "fatality", "aggregate": "max" }
-                    ]
-                }
-            }
 
         ]
     };

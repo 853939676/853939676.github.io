@@ -1,25 +1,32 @@
 <html>
 
 <head>
-    <title>Inter</title>
+    <title>Interactive visualizations</title>
     <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-lite@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
 </head>
 
 <body>
-    <h2>brushing and linking </h2>
-    <div id="map_inter_vis"></div>
-
-
+    <h2>Brushing and linking </h2>
+    <div id="map_inter_vis" style="height: 800px;"></div>
+    <br>
+    <h2>Customize the map </h2>
     <label for="color_selection">Color the map by</label>
     <select name="color_selection" id="color" onchange="plotColor(getSelectedValue())">
+        <option value="default">please make a selection</option>
         <option value="year">Year</option>
-        <option value="city">City</option>
         <option value="crash_severity">Crash_severity</option>
         <option value="collision_type">Collision_type</option>
+        <option value="fatality">Fatality</option>
+        <option value="injury">Injury</option>
+        <option value="weather">Weather</option>
+        <option value="light">Light</option>
+        <option value="road_surface">Road surface</option>
+        <option value="traffic_control">Traffic control</option>
     </select>
-    <div id="map_col"></div>
+    <br>
+    <div id="map_col" style="height: 1200px;"></div>
 </body>
 
 <script>
@@ -167,8 +174,10 @@
         var map_color_spec =
         {
             "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-            "width": 400,
-            "height": 500,
+            "height": 800,
+            "width": 640,
+            "padding":200,
+            "autosize":"none",
             "data": {
                 "url": "https://raw.githubusercontent.com/853939676/IS545/main/final_crashes.csv"
             },
@@ -200,8 +209,6 @@
                     { "field": "traffic_control", "type": "nominal" }
                 ]
             }
-
-
         };
         var embedded = vegaEmbed('#map_col', map_color_spec);
         return embedded;

@@ -30,7 +30,7 @@
     The preprocessing decreases the number of records from 5000 to around 4400.
     </p>
 
-    <h2>Links to visualizations</h2>
+    <h2>Link to visualizations</h2>
     <ul>
         <li><a href="premade.html">Premade visualizations</a></li>
         <li><a href="interactive.html">Interactive visualizations</a></li>
@@ -68,11 +68,30 @@
             fatality
             plot highlights crashes with extreme values, an accident with 4 fatalities in 2001 for example.
             <br><br>
-            <img title="Original" src="img/original_injury.png" alt="original_map" style="width:500x;height:250px;">
-            <img title="Refined" src="img/refined_injury.png" alt="refined_map" style="width:500px;height:250px;">
+            <img src="img/original_injury.png" alt="original_map" style="width:500x;height:250px;">
+            <img src="img/refined_injury.png" alt="refined_map" style="width:500px;height:250px;">
         </li>
-        <li>Removing duplicated records after merging(Python)</li>
-        <li>Handling abbreviated expressions and typos(Openrefine)</li>
+        <li>
+            <h3>Top-K ranking</h3>
+            In premade visualization section, there is a bar graph showing count of crashes by year and city. I received
+            suggestion
+            about implementing the Top-K ranking features. Unfortunately I was not able to get it working on this
+            stacked bar graph.
+            But I did looked into that feature and use it to add a new bar graph, showing top 10 cities of crashes.
+            <br><br>
+            <img src="img/topk.png" alt="original_map" style="width:250x;height:250px;">
+        </li>
+        <li>
+            <h3>Map brushing</h3>
+            I planned to create a map visualization that allows users to brush a subsection and displays corresponding
+            statistics.
+            I've tried implementing the selection feature we learned inclass but failed. While looking for solutions, I
+            saw that vega-lite
+            currently <a
+                href="https://stackoverflow.com/questions/53471426/how-can-i-zoom-into-a-map-using-vega-lite">does not
+                support brushing/zooming for geographic projections</a>. So I separated map and brushing, allowing users
+            to color the map based on different features and to brush on a scatterplot.
+        </li>
     </ul>
 </body>
 <script>
