@@ -15,19 +15,21 @@
         injuries/fatalities resulted.
     </p>
     <h2>Data preprocessing</h2>
-    <p> The orginial dataset contains 4 geojson files and were transformed to csv files for preprocessing.
+    <p> The orginial dataset contains 4 geojson files and were transformed and merged into one csv file for
+        preprocessing.
         Data preprocessing was done using both Python and
         <a href="https://openrefine.org/">Openrefine</a> to merge datasets and clean low-quality
-        records. Raw data and Python codes can be found <a href="https://github.com/853939676/IS545">here</a>.
+        records. csv files before and after preprocessing, Python codes and openrefine json receipt can be found <a
+            href="https://github.com/853939676/IS545">here</a>.
 
         Major data cleaning steps include:
     <ul>
-        <li>Handling all capitalized records(Python)</li>
+        <li>Handling all capitalized records(Openrefine)</li>
+        <li>Handling abbreviated expressions and typos(Openrefine)</li>
         <li>Reformatting the geometry column into longititude and latitude columns(Python)</li>
         <li>Removing duplicated records after merging(Python)</li>
-        <li>Handling abbreviated expressions and typos(Openrefine)</li>
     </ul>
-    The preprocessing decreases the number of records from 5000 to around 4400.
+    The preprocessing decreases the number of records from around 5000 to 4416.
     </p>
 
     <h2>Link to visualizations</h2>
@@ -89,8 +91,13 @@
             saw that vega-lite
             currently <a
                 href="https://stackoverflow.com/questions/53471426/how-can-i-zoom-into-a-map-using-vega-lite">does not
-                support brushing/zooming for geographic projections</a>. So I separated map and brushing, allowing users
-            to color the map based on different features and to brush on a scatterplot.
+                support brushing/zooming for geographic projections</a>. So I normalized geometry data to 0-1 range so
+            that they can be plotted as a scatterplot. A tradeoff of doing so it that I cannot embed the zipcode layer
+            to the resulted plot. I set the default color of the map as "by city" so users can still have a sense of
+            area.
+            <br><br>
+            <img src="img/original_brushing.png" alt="original_map" style="width:320x;height:400px;">
+            <img src="img/refined_brushing.png" alt="refined_map" style="width:320px;height:400px;">
         </li>
     </ul>
 </body>

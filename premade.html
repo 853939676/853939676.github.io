@@ -80,7 +80,7 @@
                     },
                     {
                         "data": {
-                            "url": "https://raw.githubusercontent.com/853939676/IS545/main/final_crashes.csv"
+                            "url": "https://raw.githubusercontent.com/853939676/IS545/main/clean_crashes.csv"
                         },
                         "projection": {
                             "type": "albersUsa"
@@ -116,7 +116,7 @@
             {
                 "title":"Top 10 cities of crash records",
                 "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-                "data": { "url": "https://raw.githubusercontent.com/853939676/IS545/main/final_crashes.csv" },
+                "data": { "url": "https://raw.githubusercontent.com/853939676/IS545/main/clean_crashes.csv" },
                 "transform": [
                     {
                         "aggregate": [{ "op": "count", "as": "crash_city" }],
@@ -160,7 +160,7 @@
     var fact_spec =
     {
         "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-        "data": { "url": "https://raw.githubusercontent.com/853939676/IS545/main/final_crashes.csv" },
+        "data": { "url": "https://raw.githubusercontent.com/853939676/IS545/main/clean_crashes.csv" },
         "vconcat": [
             {
                 "hconcat": [
@@ -257,7 +257,7 @@
         "width": 400,
         "height": 500,
         "data": {
-            "url": "https://raw.githubusercontent.com/853939676/IS545/main/final_crashes.csv"
+            "url": "https://raw.githubusercontent.com/853939676/IS545/main/clean_crashes.csv"
         },
         "projection": {
             "type": "albersUsa"
@@ -297,7 +297,7 @@
         "width": 400,
         "height": 500,
         "data": {
-            "url": "https://raw.githubusercontent.com/853939676/IS545/main/final_crashes.csv"
+            "url": "https://raw.githubusercontent.com/853939676/IS545/main/clean_crashes.csv"
         },
         "projection": {
             "type": "albersUsa"

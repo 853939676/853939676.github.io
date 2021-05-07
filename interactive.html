@@ -8,13 +8,14 @@
 </head>
 
 <body>
-    <h2>Brushing and linking </h2>
-    <div id="map_inter_vis" style="height: 800px;"></div>
-    <br>
-    <h2>Customize the map </h2>
+    <h2>Brushing and linking with customization </h2>
+    <p>
+        In this page, you can select a subset of crashes on the map to see statistics of your selection. Also, you can
+        color the map by different features, the color selection will also be applied to bar graphs.
+    </p>
     <label for="color_selection">Color the map by</label>
-    <select name="color_selection" id="color" onchange="plotColor(getSelectedValue())">
-        <option value="default">please make a selection</option>
+    <select name="color_selection" id="color" onchange="plotColor(getSelectedValue());">
+        <option value="city">City</option>
         <option value="year">Year</option>
         <option value="crash_severity">Crash_severity</option>
         <option value="collision_type">Collision_type</option>
@@ -25,8 +26,9 @@
         <option value="road_surface">Road surface</option>
         <option value="traffic_control">Traffic control</option>
     </select>
+    <br><br>
+    <div id="map_inter_vis" style="height: 1400px;"></div>
     <br>
-    <div id="map_col" style="height: 1200px;"></div>
 </body>
 
 <script>
@@ -35,25 +37,211 @@
         return e;
     }
 
+    function plotColor(e = "city") {
+        var map_inter_spec =
+        {
+            "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+            "data": { "url": "https://raw.githubusercontent.com/853939676/IS545/main/clean_crashes.csv" },
+            "vconcat": [
+                {
+
+                    "height": 500,
+                    "width": 400,
+                    "mark": { "type": "circle", "size": 7 },
+                    "selection": { "mapBrush": { "type": "interval" } },
+                    "encoding": {
+                        "x": { "field": "norm_x", "type": "quantitative", "axis": false },
+                        "y": { "field": "norm_y", "type": "quantitative", "axis": false },
+                        "color": {
+                            "condition": { "selection": "mapBrush", "field": e, "type": "nominal" },
+                            "value": "grey"
+                        },
+                        "tooltip": [
+                            { "field": "year", "type": "quantitative" },
+                            { "field": "city", "type": "nominal" },
+                            { "field": "crash_severity", "type": "nominal" },
+                            { "field": "collision_type", "type": "nominal" },
+                            { "field": "fatality", "type": "quantitative" },
+                            { "field": "injury", "type": "quantitative" },
+                            { "field": "weather", "type": "nominal" },
+                            { "field": "light", "type": "nominal" },
+                            { "field": "road_surface", "type": "nominal" },
+                            { "field": "traffic_control", "type": "nominal" }
+                        ]
+                    }
+                },
+                {
+                    "hconcat": [
+
+                        {
+                            "mark": { "type": "bar" },
+                            "transform": [{ "filter": { "selection": "mapBrush" } }],
+                            "encoding": {
+                                "x": { "field": "collision_type" },
+                                "y": { "aggregate": "count", "type": "quantitative" },
+                                "color": {
+                                    "field": e, "type": "nominal"
+                                },
+                                "tooltip": [
+                                    { "type": "nominal", "field": e },
+                                    { "type": "quantitative", "aggregate": "count" }
+                                ]
+                            }
+
+                        },
+                        {
+                            "mark": { "type": "bar" },
+                            "transform": [{ "filter": { "selection": "mapBrush" } }],
+                            "encoding": {
+                                "x": { "field": "year" },
+                                "y": { "aggregate": "count", "type": "quantitative" },
+                                "color": {
+                                    "field": e, "type": "nominal"
+                                },
+                                "tooltip": [
+                                    { "type": "nominal", "field": e },
+                                    { "type": "quantitative", "aggregate": "count" }
+                                ]
+                            }
+
+                        },
+                        {
+                            "mark": { "type": "bar" },
+                            "transform": [{ "filter": { "selection": "mapBrush" } }],
+                            "encoding": {
+                                "x": { "field": "fatality" },
+                                "y": { "aggregate": "count", "type": "quantitative" },
+                                "color": {
+                                    "field": e, "type": "nominal"
+                                },
+                                "tooltip": [
+                                    { "type": "nominal", "field": e },
+                                    { "type": "quantitative", "aggregate": "count" }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "hconcat": [
+                        {
+                            "mark": { "type": "bar" },
+                            "transform": [{ "filter": { "selection": "mapBrush" } }],
+                            "encoding": {
+                                "x": { "field": "weather" },
+                                "y": { "aggregate": "count", "type": "quantitative" },
+                                "color": {
+                                    "field": e, "type": "nominal"
+                                },
+                                "tooltip": [
+                                    { "type": "nominal", "field": e },
+                                    { "type": "quantitative", "aggregate": "count" }
+                                ]
+                            }
+                        },
+                        {
+                            "mark": { "type": "bar" },
+                            "transform": [{ "filter": { "selection": "mapBrush" } }],
+                            "encoding": {
+                                "x": { "field": "road_surface" },
+                                "y": { "aggregate": "count", "type": "quantitative" },
+                                "color": {
+                                    "field": e, "type": "nominal"
+                                },
+                                "tooltip": [
+                                    { "type": "nominal", "field": e },
+                                    { "type": "quantitative", "aggregate": "count" }
+                                ]
+                            }
+                        },
+                        {
+                            "mark": { "type": "bar" },
+                            "transform": [{ "filter": { "selection": "mapBrush" } }],
+                            "encoding": {
+                                "x": { "field": "light" },
+                                "y": { "aggregate": "count", "type": "quantitative" },
+                                "color": {
+                                    "field": e, "type": "nominal"
+                                },
+                                "tooltip": [
+                                    { "type": "nominal", "field": e },
+                                    { "type": "quantitative", "aggregate": "count" }
+                                ]
+                            }
+                        },
+                        {
+                            "mark": { "type": "bar" },
+                            "transform": [{ "filter": { "selection": "mapBrush" } }],
+                            "encoding": {
+                                "x": { "field": "crash_severity" },
+                                "y": { "aggregate": "count", "type": "quantitative" },
+                                "color": {
+                                    "field": e, "type": "nominal"
+                                },
+                                "tooltip": [
+                                    { "type": "nominal", "field": e },
+                                    { "type": "quantitative", "aggregate": "count" }
+                                ]
+                            }
+                        },
+                        {
+                            "mark": { "type": "bar" },
+                            "transform": [{ "filter": { "selection": "mapBrush" } }],
+                            "encoding": {
+                                "x": { "field": "injury" },
+                                "y": { "aggregate": "count", "type": "quantitative" },
+                                "color": {
+                                    "field": e, "type": "nominal"
+                                },
+                                "tooltip": [
+                                    { "type": "nominal", "field": e },
+                                    { "type": "quantitative", "aggregate": "count" }
+                                ]
+                            }
+                        }
+                    ]
+                }]
+        };
+        var embedded = vegaEmbed('#map_inter_vis', map_inter_spec);
+
+        return embedded;
+    }
+
     var map_inter_spec =
     {
         "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-        "data": { "url": "https://raw.githubusercontent.com/853939676/IS545/main/final_crashes.csv" },
+        "data": { "url": "https://raw.githubusercontent.com/853939676/IS545/main/clean_crashes.csv" },
         "vconcat": [
             {
-                "hconcat": [
-                    {
-                        "mark": { "type": "circle" },
-                        "selection": { "mapBrush": { "type": "interval" } },
-                        "encoding": {
-                            "x": { "field": "year", "type": "ordinal" },
-                            "y": { "field": "injury", "type": "ordinal" },
-                            "color": {
-                                "condition": { "selection": "mapBrush" },
-                                "value": "grey"
-                            }
-                        }
+
+                "height": 500,
+                "width": 400,
+                "mark": { "type": "circle", "size": 10 },
+                "selection": { "mapBrush": { "type": "interval" } },
+                "encoding": {
+                    "x": { "field": "norm_x", "type": "quantitative", "axis": false },
+                    "y": { "field": "norm_y", "type": "quantitative", "axis": false },
+                    "color": {
+                        "condition": { "selection": "mapBrush", "field": "city", "type": "nominal" },
+                        "value": "grey"
                     },
+                    "tooltip": [
+                        { "field": "year", "type": "quantitative" },
+                        { "field": "city", "type": "nominal" },
+                        { "field": "crash_severity", "type": "nominal" },
+                        { "field": "collision_type", "type": "nominal" },
+                        { "field": "fatality", "type": "quantitative" },
+                        { "field": "injury", "type": "quantitative" },
+                        { "field": "weather", "type": "nominal" },
+                        { "field": "light", "type": "nominal" },
+                        { "field": "road_surface", "type": "nominal" },
+                        { "field": "traffic_control", "type": "nominal" }
+                    ]
+                }
+            },
+            {
+                "hconcat": [
+
                     {
                         "mark": { "type": "bar" },
                         "transform": [{ "filter": { "selection": "mapBrush" } }],
@@ -61,14 +249,45 @@
                             "x": { "field": "collision_type" },
                             "y": { "aggregate": "count", "type": "quantitative" },
                             "color": {
-                                "field": "year", "type": "nominal"
+                                "field": "city", "type": "nominal"
                             },
                             "tooltip": [
-                                { "type": "nominal", "field": "year" },
+                                { "type": "nominal", "field": "city" },
                                 { "type": "quantitative", "aggregate": "count" }
                             ]
                         }
 
+                    },
+                    {
+                        "mark": { "type": "bar" },
+                        "transform": [{ "filter": { "selection": "mapBrush" } }],
+                        "encoding": {
+                            "x": { "field": "year" },
+                            "y": { "aggregate": "count", "type": "quantitative" },
+                            "color": {
+                                "field": "city", "type": "nominal"
+                            },
+                            "tooltip": [
+                                { "type": "nominal", "field": "city" },
+                                { "type": "quantitative", "aggregate": "count" }
+                            ]
+                        }
+
+                    },
+                    {
+                        "mark": { "type": "bar" },
+                        "transform": [{ "filter": { "selection": "mapBrush" } }],
+                        "encoding": {
+                            "x": { "field": "fatality" },
+                            "y": { "aggregate": "count", "type": "quantitative" },
+                            "color": {
+                                "field": "city", "type": "nominal"
+                            },
+                            "tooltip": [
+                                { "type": "nominal", "field": "city" },
+                                { "type": "quantitative", "aggregate": "count" }
+                            ]
+                        }
                     }
                 ]
             },
@@ -81,10 +300,10 @@
                             "x": { "field": "weather" },
                             "y": { "aggregate": "count", "type": "quantitative" },
                             "color": {
-                                "field": "year", "type": "nominal"
+                                "field": "city", "type": "nominal"
                             },
                             "tooltip": [
-                                { "type": "nominal", "field": "year" },
+                                { "type": "nominal", "field": "city" },
                                 { "type": "quantitative", "aggregate": "count" }
                             ]
                         }
@@ -96,10 +315,10 @@
                             "x": { "field": "road_surface" },
                             "y": { "aggregate": "count", "type": "quantitative" },
                             "color": {
-                                "field": "year", "type": "nominal"
+                                "field": "city", "type": "nominal"
                             },
                             "tooltip": [
-                                { "type": "nominal", "field": "year" },
+                                { "type": "nominal", "field": "city" },
                                 { "type": "quantitative", "aggregate": "count" }
                             ]
                         }
@@ -111,10 +330,10 @@
                             "x": { "field": "light" },
                             "y": { "aggregate": "count", "type": "quantitative" },
                             "color": {
-                                "field": "year", "type": "nominal"
+                                "field": "city", "type": "nominal"
                             },
                             "tooltip": [
-                                { "type": "nominal", "field": "year" },
+                                { "type": "nominal", "field": "city" },
                                 { "type": "quantitative", "aggregate": "count" }
                             ]
                         }
@@ -126,10 +345,10 @@
                             "x": { "field": "crash_severity" },
                             "y": { "aggregate": "count", "type": "quantitative" },
                             "color": {
-                                "field": "year", "type": "nominal"
+                                "field": "city", "type": "nominal"
                             },
                             "tooltip": [
-                                { "type": "nominal", "field": "year" },
+                                { "type": "nominal", "field": "city" },
                                 { "type": "quantitative", "aggregate": "count" }
                             ]
                         }
@@ -141,25 +360,10 @@
                             "x": { "field": "injury" },
                             "y": { "aggregate": "count", "type": "quantitative" },
                             "color": {
-                                "field": "year", "type": "nominal"
+                                "field": "city", "type": "nominal"
                             },
                             "tooltip": [
-                                { "type": "nominal", "field": "year" },
-                                { "type": "quantitative", "aggregate": "count" }
-                            ]
-                        }
-                    },
-                    {
-                        "mark": { "type": "bar" },
-                        "transform": [{ "filter": { "selection": "mapBrush" } }],
-                        "encoding": {
-                            "x": { "field": "fatality" },
-                            "y": { "aggregate": "count", "type": "quantitative" },
-                            "color": {
-                                "field": "year", "type": "nominal"
-                            },
-                            "tooltip": [
-                                { "type": "nominal", "field": "year" },
+                                { "type": "nominal", "field": "city" },
                                 { "type": "quantitative", "aggregate": "count" }
                             ]
                         }
@@ -168,51 +372,6 @@
             }]
     };
     var embedded = vegaEmbed('#map_inter_vis', map_inter_spec);
-
-
-    function plotColor(e) {
-        var map_color_spec =
-        {
-            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-            "height": 800,
-            "width": 640,
-            "padding":200,
-            "autosize":"none",
-            "data": {
-                "url": "https://raw.githubusercontent.com/853939676/IS545/main/final_crashes.csv"
-            },
-            "mark": "circle",
-            "encoding": {
-                "longitude": {
-                    "field": "x",
-                    "type": "quantitative"
-                },
-                "latitude": {
-                    "field": "y",
-                    "type": "quantitative"
-                },
-                "size": { "value": 10 },
-                "color": {
-                    "field": e,
-                    "type": "nominal"
-                },
-                "tooltip": [
-                    { "field": "year", "type": "quantitative" },
-                    { "field": "city", "type": "nominal" },
-                    { "field": "crash_severity", "type": "nominal" },
-                    { "field": "collision_type", "type": "nominal" },
-                    { "field": "fatality", "type": "quantitative" },
-                    { "field": "injury", "type": "quantitative" },
-                    { "field": "weather", "type": "nominal" },
-                    { "field": "light", "type": "nominal" },
-                    { "field": "road_surface", "type": "nominal" },
-                    { "field": "traffic_control", "type": "nominal" }
-                ]
-            }
-        };
-        var embedded = vegaEmbed('#map_col', map_color_spec);
-        return embedded;
-    }
 
 </script>
 
