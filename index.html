@@ -2,9 +2,20 @@
 
 <head>
     <title>Rui Liu IS545 Final Project</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+    <div class="header">
+        <h1>Traffic Crashes in Champaign County</h1>
+        <p>IS545 Final project Spr2021 - Rui Liu(ruiliu8)</p>
+    </div>
+    <div class="topnav">
+        <a class="active" href="index.html">Home</a>
+        <a href="challenge.html">Challengens</a>
+        <a href="premade.html">Premade visualizations</a>
+        <a href="interactive.html">Interactive visualizations</a>
+    </div>
     <h2>About the dataset</h2>
     <p>
         This project uses a dataset about traffic crashes in Champaign County from 1999 to 2017 from <a
@@ -21,8 +32,8 @@
         <a href="https://openrefine.org/">Openrefine</a> to merge datasets and clean low-quality
         records. csv files before and after preprocessing, Python codes and openrefine json receipt can be found <a
             href="https://github.com/853939676/IS545">here</a>.
-
-        Major data cleaning steps include:
+    </p>
+    Major data cleaning steps include:
     <ul>
         <li>Handling all capitalized records(Openrefine)</li>
         <li>Handling abbreviated expressions and typos(Openrefine)</li>
@@ -30,76 +41,11 @@
         <li>Removing duplicated records after merging(Python)</li>
     </ul>
     The preprocessing decreases the number of records from around 5000 to 4416.
+    <br><br>
+    *Design and source code of navigation bar&header are from <a
+        href="https://www.w3schools.com/howto/howto_js_topnav.asp">W3schools.com</a>.
     </p>
 
-    <h2>Link to visualizations</h2>
-    <ul>
-        <li><a href="premade.html">Premade visualizations</a></li>
-        <li><a href="interactive.html">Interactive visualizations</a></li>
-    </ul>
-
-    <h2>Challengens</h2>
-    <ul>
-        <li>
-            <h3>Background of map</h3>
-            In the first version of the dotted map, I used a <a
-                href="https://raw.githubusercontent.com/kthotav/TopoJSON-Maps/master/usa/usa-states/illinois/illinois-counties.json">
-                county topojson</a> as the background layer,
-            hoping to make the map more meaningful. But the topojson file does not have more detailed city-level
-            information so the bottom layer is more like a colored background instead of a map. So I replaced it
-            with an <a
-                href="https://gist.githubusercontent.com/jefffriesen/6892860/raw/e1f82336dde8de0539a7bac7b8bc60a23d0ad788/zips_us_topo.json">
-                us zipcode topojson</a> and filtered out zipcodes in Champaign county only. Now the map have a
-            more meaningful background. I also added tooltip for that layer, displaying zipcodes and city names.
-            A benefit of this is that some records in the crash dataset does not have city recorded, after adding
-            the bottom layer, users can refer to that layer for additional information.
-            <br><br>
-            <img src="img/original_map.png" alt="original_map" style="width:300px;height:450px;">
-            <img src="img/refined_map.png" alt="refined_map" style="width:300px;height:450px;">
-        </li>
-        <li>
-            <h3>Statistics of data</h3>
-            The dataset only contains 3 numeric columns(year, fatality and injury) and none of them is
-            decimal which
-            makes the dataset less suitable for continuous visualizations. I first tried injury vs. year but
-            the dotted graph provides very limited information. After going over <a
-                href="https://vega.github.io/vega-lite/examples/circle_binned.html">examples</a> on the vega-lite
-            website,
-            I transformed it to a statistical scatterplot showing how max and average injury/fatality change every year.
-            By doing so, I was able to see a decreasing trend in both injury and fatality as time goes by. Also the
-            fatality
-            plot highlights crashes with extreme values, an accident with 4 fatalities in 2001 for example.
-            <br><br>
-            <img src="img/original_injury.png" alt="original_map" style="width:500x;height:250px;">
-            <img src="img/refined_injury.png" alt="refined_map" style="width:500px;height:250px;">
-        </li>
-        <li>
-            <h3>Top-K ranking</h3>
-            In premade visualization section, there is a bar graph showing count of crashes by year and city. I received
-            suggestions
-            about implementing the Top-K ranking features. Unfortunately I was not able to get it working on this
-            stacked bar graph.
-            But I did looked into that feature and use it to add a new bar graph, showing top 10 cities of crashes.
-            <br><br>
-            <img src="img/topk.png" alt="original_map" style="width:250x;height:250px;">
-        </li>
-        <li>
-            <h3>Map brushing</h3>
-            I planned to create a map visualization that allows users to brush a subsection and displays corresponding
-            statistics.
-            I've tried implementing the selection feature we learned inclass but failed. While looking for solutions, I
-            saw that vega-lite
-            currently <a
-                href="https://stackoverflow.com/questions/53471426/how-can-i-zoom-into-a-map-using-vega-lite">does not
-                support brushing/zooming for geographic projections</a>. So I normalized geometry data to 0-1 range so
-            that they can be plotted as a scatterplot. A tradeoff of doing so it that I cannot embed the zipcode layer
-            to the resulted plot. I set the default color of the map as "by city" so users can still have a sense of
-            area.
-            <br><br>
-            <img src="img/original_brushing.png" alt="original_map" style="width:320x;height:400px;">
-            <img src="img/refined_brushing.png" alt="refined_map" style="width:320px;height:400px;">
-        </li>
-    </ul>
 </body>
 <script>
 

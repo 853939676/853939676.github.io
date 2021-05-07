@@ -5,9 +5,20 @@
     <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-lite@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+    <div class="header">
+        <h1>Traffic Crashes in Champaign County</h1>
+        <p>IS545 Final project Spr2021 - Rui Liu(ruiliu8)</p>
+    </div>
+    <div class="topnav">
+        <a href="index.html">Home</a>
+        <a href="challenge.html">Challengens</a>
+        <a href="premade.html">Premade visualizations</a>
+        <a class="active" href="interactive.html">Interactive visualizations</a>
+    </div>
     <h2>Brushing and linking with customization </h2>
     <p>
         In this page, you can select a subset of crashes on the map to see statistics of your selection. Also, you can
@@ -26,6 +37,7 @@
         <option value="road_surface">Road surface</option>
         <option value="traffic_control">Traffic control</option>
     </select>
+    *Click the map again to cancel brushing.
     <br><br>
     <div id="map_inter_vis" style="height: 1400px;"></div>
     <br>

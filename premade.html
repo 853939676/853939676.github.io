@@ -5,9 +5,20 @@
     <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-lite@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+    <div class="header">
+        <h1>Traffic Crashes in Champaign County</h1>
+        <p>IS545 Final project Spr2021 - Rui Liu(ruiliu8)</p>
+    </div>
+    <div class="topnav">
+        <a href="index.html">Home</a>
+        <a href="challenge.html">Challengens</a>
+        <a class="active" href="premade.html">Premade visualizations</a>
+        <a href="interactive.html">Interactive visualizations</a>
+    </div>
     <h2>Map of traffic crashes in Champaign County</h2>
     <p>
         The map shows all traffic crashes in Champaign county from 1999 to 2017. By placing your mouse over
@@ -16,20 +27,23 @@
         <br>
         From the map we can see that the density of crashes is significantly higher in downtown Champaign-Urbana
         area and along major highways. And the bar graph on the right displays top 10 cities of crashes. The count
-        of crashes in the bar graph is smaller than dots in the map due to the fact that many crashes are labeled 
+        of crashes in the bar graph is smaller than dots in the map due to the fact that many crashes are labeled
         as "unincorporated" city.
     </p>
     <div id="map_vis" style="height: 600px;"></div>
     <h2>Mean of injuries and fatalities, count of records by year</h2>
     <p>
-        First two graphs shows the mean and max of injuries and fatalities by year. The position of circles represents 
-        the mean value for each year. The size and color of circles represent the max number for each year. 
-        To be more specific, the greater the number is, the darker and larger the circle will be. 
+        First two graphs shows the mean and max of injuries and fatalities by year. The position of circles represents
+        the mean value for each year. The size and color of circles represent the max number for each year.
+        To be more specific, the greater the number is, the darker and larger the circle will be.
         <br>
-        An interesting finding is that although count of records increased a lot from 1999, mean of injury remains relatively
-        stable. Moreover, there is a decreasing trend in mean of fatality. A possible explaination to the sudden increase of
-        records in 2005 is that the Champaign county might started using digital techniques, so more crashes were recorded 
-        starting 2005. 
+        An interesting finding is that although count of records increased a lot from 1999, mean of injury remains
+        relatively
+        stable. Moreover, there is a decreasing trend in mean of fatality. A possible explaination to the sudden
+        increase of
+        records in 2005 is that the Champaign county might started using digital techniques, so more crashes were
+        recorded
+        starting 2005.
     </p>
     <div id="fact_vis" style="width: 800px;"></div>
 
@@ -114,7 +128,7 @@
                 ]
             },
             {
-                "title":"Top 10 cities of crash records",
+                "title": "Top 10 cities of crash records",
                 "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
                 "data": { "url": "https://raw.githubusercontent.com/853939676/IS545/main/clean_crashes.csv" },
                 "transform": [
@@ -131,9 +145,9 @@
                     }
                 ],
                 "encoding": {
-                    "x": { "aggregate": "sum", "field": "crash_city", "type": "quantitative", "title":"Count of crashes"},
+                    "x": { "aggregate": "sum", "field": "crash_city", "type": "quantitative", "title": "Count of crashes" },
                     "y": {
-                        "field": "Cities", "type": "ordinal", "title":"Cities",
+                        "field": "Cities", "type": "ordinal", "title": "Cities",
                         "sort": { "aggregate": "sum", "field": "crash_city", "type": "quantitative", "order": "descending" }
                     }
                 },
@@ -150,7 +164,7 @@
                         "text": { "aggregate": "sum", "field": "crash_city", "type": "quantitative" }
                     }
                 }]
-                
+
             }
         ]
 
